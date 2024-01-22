@@ -35,10 +35,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(499, 353);
+            this.AutoScroll = true;
+            this.AutoScrollMargin = new System.Drawing.Size(4, 4);
+            this.ClientSize = new System.Drawing.Size(337, 432);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(200, 200);
             this.Name = "MainWindow";
             this.Text = "Start button";
+            this.Load += new System.EventHandler(this.MainWindow_Load);
+            this.Shown += new System.EventHandler(this.MainWindow_Shown);
             this.ResumeLayout(false);
 
         }
