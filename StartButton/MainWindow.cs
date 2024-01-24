@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace StartButton
 {
     public partial class MainWindow : Form
     {
         private string _filename;
+        private List<StartConfiguration> StartConfigurations { get; set; }
 
         public MainWindow()
         {
@@ -44,7 +47,73 @@ namespace StartButton
             {
                 MessageBox.Show(this, originalFilename, @"File not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
+                return;
             }
+
+            var startConfiguration = LoadShortcuts(_filename);
+
+            if (startConfiguration == null)
+            {
+                MessageBox.Show(this, originalFilename, @"Load failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+                return;
+            }
+
+            StartConfigurations = startConfiguration;
+            RefreshList();
+        }
+
+        public List<StartConfiguration> LoadShortcuts(string filename)
+        {
+            var result = new List<StartConfiguration>();
+            var source = "";
+
+            using (var sr = new StreamReader(filename))
+            {
+                source = sr.ReadToEnd();
+                sr.Close();
+            }
+
+            var dom = new XmlDocument();
+            dom.LoadXml(source);
+            var shortCuts = dom.DocumentElement.SelectNodes("shortCut");
+
+            foreach (XmlElement shortCut in shortCuts)
+            {
+                var name = shortCut.SelectSingleNode("name").InnerText;
+                var processes = shortCut.SelectSingleNode("processList").SelectNodes("process");
+                var p = new List<string>();
+
+                foreach (XmlElement process in processes)
+                    p.Add(process.InnerText);
+
+
+                var sc = new StartConfiguration();
+
+                var parsedShortCut = new ShortCut(name);
+
+                foreach (var path in p)
+                    parsedShortCut.ProcessList.Add(new Process(path));
+
+                sc.ShortCuts.Add(parsedShortCut);
+                result.Add(sc);
+            }
+
+            return result;
+        }
+
+        private void RefreshList()
+        {
+            foreach (Control control in Controls)
+                control.Click -= LinkClick;
+
+            while (Controls.Count > 0)
+                Controls.RemoveAt(Controls.Count - 1);
+        }
+
+        private void LinkClick(object sender, EventArgs e)
+        {
+
         }
     }
 }

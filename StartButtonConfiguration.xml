@@ -1,4 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <shortCuts>
-
+    <shortCut>
+        <name>Social media</name>
+        <processList>
+            <process>https://facebook.com/</process>
+            <process>https://instagram.com/</process>
+            <process>https://twitter.com/</process>
+            <process>https://threads.net/</process>
+        </processList>
+    </shortCut>
+    <shortCut>
+        <name>C128-bok</name>
+        <processList>
+            <process>C:\Program Files (x86)\CBM prg Studio x86\CBMPrgStudio.exe</process>
+        </processList>
+    </shortCut>
 </shortCuts>
