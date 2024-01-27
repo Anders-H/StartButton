@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -37,8 +38,18 @@ namespace StartButton
 
             if (!fi.Exists)
             {
-                var exe = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
-                fi = new FileInfo(Path.Combine(exe.Directory.Parent.Parent.Parent.FullName, "StartButtonConfiguration.xml"));
+                var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+                var exe = new FileInfo(executingAssembly.Location);
+                var dir = exe.Directory;
+
+                if (dir == null)
+                {
+                    MessageBox.Show(this, originalFilename, @"File not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Close();
+                    return;
+                }
+
+                fi = new FileInfo(Path.Combine(dir.Parent?.Parent?.Parent?.FullName ?? "", "StartButtonConfiguration.xml"));
                 _filename = fi.FullName;
                 System.Diagnostics.Debug.WriteLine(_filename);
             }
@@ -66,7 +77,7 @@ namespace StartButton
         public List<StartConfiguration> LoadShortcuts(string filename)
         {
             var result = new List<StartConfiguration>();
-            var source = "";
+            string source;
 
             using (var sr = new StreamReader(filename))
             {
@@ -76,20 +87,31 @@ namespace StartButton
 
             var dom = new XmlDocument();
             dom.LoadXml(source);
-            var shortCuts = dom.DocumentElement.SelectNodes("shortCut");
+            var shortCuts = dom.DocumentElement?.SelectNodes("shortCut");
+
+            if (shortCuts == null)
+            {
+                MessageBox.Show(
+                    this,
+                    $@"XML document ({filename}) did not contain shortCuts/shortCut.",
+                    Text,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                Close();
+                return null;
+            }
 
             foreach (XmlElement shortCut in shortCuts)
             {
-                var name = shortCut.SelectSingleNode("name").InnerText;
-                var processes = shortCut.SelectSingleNode("processList").SelectNodes("process");
-                var p = new List<string>();
+                var name = shortCut.SelectSingleNode("name")?.InnerText ?? "";
+                var processes = shortCut.SelectSingleNode("processList")?.SelectNodes("process");
 
-                foreach (XmlElement process in processes)
-                    p.Add(process.InnerText);
+                if (processes == null)
+                    continue;
 
-
+                var p = (from XmlElement process in processes select process.InnerText).ToList();
                 var sc = new StartConfiguration();
-
                 var parsedShortCut = new ShortCut(name);
 
                 foreach (var path in p)
@@ -109,6 +131,11 @@ namespace StartButton
 
             while (Controls.Count > 0)
                 Controls.RemoveAt(Controls.Count - 1);
+
+            foreach (var startConfiguration in StartConfigurations)
+            {
+                
+            }
         }
 
         private void LinkClick(object sender, EventArgs e)
