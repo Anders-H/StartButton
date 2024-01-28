@@ -15,11 +15,13 @@ namespace StartButton
     public class ShortCut
     {
         public string Name { get; }
+        public bool Warn { get; }
         public List<Process> ProcessList { get; }
 
-        public ShortCut(string name)
+        public ShortCut(string name, bool warn)
         {
             Name = name;
+            Warn = warn;
             ProcessList = new List<Process>();
         }
     }

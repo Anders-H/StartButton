@@ -9,7 +9,7 @@
             <process>https://threads.net/</process>
         </processList>
     </shortCut>
-    <shortCut>
+    <shortCut warn="true">
         <name>C128-bok</name>
         <processList>
             <process>C:\Program Files (x86)\CBM prg Studio x86\CBMPrgStudio.exe</process>
