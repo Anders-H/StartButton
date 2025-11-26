@@ -1,18 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <shortCuts>
-    <shortCut>
-        <name>Social media</name>
-        <processList>
-            <process>https://facebook.com/</process>
-            <process>https://instagram.com/</process>
-            <process>https://twitter.com/</process>
-            <process>https://threads.net/</process>
-        </processList>
-    </shortCut>
-    <shortCut warn="true">
-        <name>C128-bok</name>
-        <processList>
-            <process>C:\Program Files (x86)\CBM prg Studio x86\CBMPrgStudio.exe</process>
-        </processList>
-    </shortCut>
+	<shortCut>
+		<name>Social media</name>
+		<processList>
+			<process>https://facebook.com/</process>
+			<process>https://instagram.com/</process>
+			<process>https://x.com/</process>
+		</processList>
+	</shortCut>
+	<shortCut warn="true">
+		<name>C128-bok</name>
+		<processList>
+			<process>C:\Program Files (x86)\CBM prg Studio x86\CBMPrgStudio.exe</process>
+			<process>D:\GitRepos\CommodoreBASIC70</process>
+		</processList>
+	</shortCut>
+	<shortCut>
+		<name>Notepad 1</name>
+		<processList>
+			<process>notepad.exe</process>
+		</processList>
+	</shortCut>
+	<shortCut>
+		<name>Notepad 2</name>
+		<processList>
+			<process>notepad.exe</process>
+		</processList>
+	</shortCut>
+	<shortCut>
+		<name>Notepad 3</name>
+		<processList>
+			<process>notepad.exe</process>
+		</processList>
+	</shortCut>
+	<shortCut>
+		<name>Notepad 4 (with "runas")</name>
+		<processList>
+			<process runas="true">notepad.exe</process>
+		</processList>
+	</shortCut>
+	<shortCut>
+		<name>Notepad 5</name>
+		<processList>
+			<process>notepad.exe</process>
+		</processList>
+	</shortCut>
 </shortCuts>
